@@ -20,6 +20,15 @@ primary_table = {
         "GENASI":100
         }
 
+basic_limit = primary_table["HALFLING"]
+print("Choose from [B]asic four or [A]ll races? ")
+race_set = input()
+
+if race_set == "B":
+    while primary_roll > basic_limit:
+        primary_roll = roll("1d100")
+
+
 def human_sub():
     sub = roll("1d10")
     if sub > 6:
