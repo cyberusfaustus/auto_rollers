@@ -161,15 +161,14 @@ def tiefling_sub(prace):
             return "Unknown (Variant)"
         return "Blood of Zariel"
 
-primary_race = ""
-sub_race = ""
+def ancestry(rroll, race_table):
+    primary_race = ""
+    sub_race = ""
+    primary_race = race(rroll, race_table)
+    sub_race = subrace(primary_race)
+    return primary_race + ": " + sub_race
 
-primary_race = race(primary_roll, phb_race_table)
-sub_race = subrace(primary_race)
-
-race = primary_race + ": " + sub_race
-
-formattedRace = " {} - " + race
+formattedRace = " {} - " + ancestry(primary_roll, phb_race_table)
 
 print()
 print(formattedRace.format(primary_roll))
