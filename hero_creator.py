@@ -29,7 +29,12 @@ print()
 print("    \"A new " + ancestry + " has been born\"")
 attribs = croller.generate()
 print("    \"And they shall have the following attributes:\"")
-print(attribs)
+#print(attribs)
+print()
+for k, v in attribs.items():
+    formatedAttrib = "       {}:  {} - " + v.format(verbose=True)
+    print(formatedAttrib.format(k,v))
+print()
 time.sleep(1)
 print(".", end='')
 time.sleep(1)
@@ -39,5 +44,5 @@ print("    \"They shall certainly be great, yet their course is undetermined... 
 print("          \"They would be good in any of these professions:\"")
 
 sClasses = croller.suggestedClasses(attribs)
-print(sClasses)
+print("                  " + sClasses)
 
