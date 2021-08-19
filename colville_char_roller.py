@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys, getopt
 from xdice import * 
 
 a1 = 0
@@ -150,21 +151,23 @@ def suggestedClasses(c):
 
     return classes
 
-colvilleChar = generate()
+def main(argv):
+    colvilleChar = generate()
 
-print("-----------------------------")
-# print("-STR-DEX-CON-INT-WIS-CHA-")  
-# print(colvilleChar.values())
-print()
-for k, v in colvilleChar.items():
-    formatedAttrib = " {}:  {} - " + v.format(verbose=True)
+    print("-----------------------------")
+    # print("-STR-DEX-CON-INT-WIS-CHA-")  
+    # print(colvilleChar.values())
+    print()
+    for k, v in colvilleChar.items():
+        formatedAttrib = " {}:  {} - " + v.format(verbose=True)
+        print(formatedAttrib.format(k,v))
+    print()
+    print("Suggested Classes:")
+    print(suggestedClasses(colvilleChar))
+    print()
 
-    print(formatedAttrib.format(k,v))
-print()
-print("Suggested Classes:")
-print(suggestedClasses(colvilleChar))
-
-print()
+if __name__ =="__main__":
+    main(sys.argv[1:])
 
 
 
