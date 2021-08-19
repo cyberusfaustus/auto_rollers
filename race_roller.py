@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
+import sys, getopt
 from xdice import * 
-
-primary_roll  = roll("1d100")
 
 phb_race_table = (
 	{"RACE":"Dragonborn","LOW":1,"HIGH":1},
@@ -15,6 +14,13 @@ phb_race_table = (
 	{"RACE":"Half-Orc","LOW":98,"HIGH":99},
 	{"RACE":"Tiefling","LOW":100,"HIGH":100}
 	)
+
+basic_four_table = (
+        {"RACE":"Halfling","LOW":1,"HIGH":10},
+        {"RACE":"Elf","LOW":11,"HIGH":25},
+        {"RACE":"Human","LOW":26,"HIGH":75},
+        {"RACE":"Dwarf","LOW":76,"HIGH":100}
+        )
 
 def race(rroll, rtable):
 	prace = ""
@@ -168,9 +174,36 @@ def ancestry(rroll, race_table):
     sub_race = subrace(primary_race)
     return primary_race + ": " + sub_race
 
-formattedRace = " {} - " + ancestry(primary_roll, phb_race_table)
+def main(argv):
+    table_choice = ''
+    helpText = "race_roller.py -d <demographic_table>\n"\
+               "-d   optional, accepted values include:\n"\
+               "     P : uses Player's Handbook Races (Default)\n"\
+               "     B : uses Basic Four Races"
+    try:
+        opts, args = getopt.getopt(argv, "hd:")
+    except getopt.GetoptError:
+        print(helpText)
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print(helpText)
+            sys.exit()
+        elif opt == '-d':
+            table_choice = str(arg)
 
-print()
-print(formattedRace.format(primary_roll))
-print()
+    if table_choice == "B":
+        race_table = basic_four_table
+    else:
+        race_table = phb_race_table
+
+    primary_roll = roll("1d100")
+    formattedRace = " {} - " + ancestry(primary_roll, race_table)
+
+    print()
+    print(formattedRace.format(primary_roll))
+    print()
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
 
