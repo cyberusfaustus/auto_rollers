@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 
-import sys, getopt
+import sys, getopt, os, csv
+import table_roller
 from xdice import * 
 
-phb_race_table = (
-	{"RACE":"Dragonborn","LOW":1,"HIGH":1},
-	{"RACE":"Half-Elf","LOW":2,"HIGH":3},
-	{"RACE":"Halfling","LOW":4,"HIGH":6},
-	{"RACE":"Elf","LOW":7,"HIGH":9},
-	{"RACE":"Human","LOW":10,"HIGH":89},
-	{"RACE":"Dwarf","LOW":90,"HIGH":94},
-	{"RACE":"Gnome","LOW":95,"HIGH":97},
-	{"RACE":"Half-Orc","LOW":98,"HIGH":99},
-	{"RACE":"Tiefling","LOW":100,"HIGH":100}
-	)
+def load_race_table(fname):
+    with open(fname, "r") as f:
+        csv_reader = csv.DictReader(f)
+        race_table = list(csv_reader)
+        ensureIntDemographicData(race_table)
+        return race_table
 
-basic_four_table = (
-        {"RACE":"Halfling","LOW":1,"HIGH":10},
-        {"RACE":"Elf","LOW":11,"HIGH":25},
-        {"RACE":"Human","LOW":26,"HIGH":75},
-        {"RACE":"Dwarf","LOW":76,"HIGH":100}
-        )
+def ensureIntDemographicData(race_table):
+    for r in race_table:
+        r["LOW"] = int(r["LOW"])
+        r["HIGH"] = int(r["HIGH"])
+
+
+def checkForCSV(fname):
+    root, ext = os.path.splitext(fname)
+    if ext == ".csv":
+        return True
+    return False
 
 def race(rroll, rtable):
 	prace = ""
@@ -167,19 +168,43 @@ def tiefling_sub(prace):
             return "Unknown (Variant)"
         return "Blood of Zariel"
 
-def ancestry(rroll, race_table):
-    primary_race = ""
-    sub_race = ""
-    primary_race = race(rroll, race_table)
+
+def ancestry(primary_race):
     sub_race = subrace(primary_race)
     return primary_race + ": " + sub_race
+
+def print_ancestry_from_file(fname):
+    table = table_roller.load_table_data(fname)
+    die = table_roller.get_die_from_last_entry(table)
+    table_roller.ensureIntLowHighData(table)
+    primary_roll = roll("1d"+die)
+    primary_race = table_roller.pick_from_table(primary_roll, table)
+    formattedRace = " {} - " + ancestry(primary_race)
+    print()
+    print(formattedRace.format(primary_roll))
+    print() 
 
 def main(argv):
     table_choice = ''
     helpText = "race_roller.py -d <demographic_table>\n"\
                "-d   optional, accepted values include:\n"\
                "     P : uses Player's Handbook Races (Default)\n"\
-               "     B : uses Basic Four Races"
+               "     B : uses Basic Four Races\n"\
+               "     <filename>.csv : CSV file containing custom demographics\n\n"\
+               "-------------------------------------------------------------\n"\
+               "CSV file first line must have headers RACE,LOW,HIGH\n"\
+               "designating the race and the low and high d100 values for\n"\
+               "the demographic.\n"\
+               "Races with Supported sub-race calculation:\n"\
+               "Dragonborn\n"\
+               "Half-Elf\n"\
+               "Halfling\n"\
+               "Elf\n"\
+               "Human\n"\
+               "Dwarf\n"\
+               "Gnome\n"\
+               "Tiefling\n"\
+
     try:
         opts, args = getopt.getopt(argv, "hd:")
     except getopt.GetoptError:
@@ -193,16 +218,11 @@ def main(argv):
             table_choice = str(arg)
 
     if table_choice == "B":
-        race_table = basic_four_table
+        print_ancestry_from_file("./roll_tables/demographics/basic_four.csv")
+    elif checkForCSV(table_choice):
+        print_ancestry_from_file(table_choice)
     else:
-        race_table = phb_race_table
-
-    primary_roll = roll("1d100")
-    formattedRace = " {} - " + ancestry(primary_roll, race_table)
-
-    print()
-    print(formattedRace.format(primary_roll))
-    print()
+        print_ancestry_from_file("./roll_tables/demographics/phb_races_swordcoast.csv")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
