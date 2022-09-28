@@ -2,24 +2,6 @@
 import sys, getopt, os, csv
 from xdice import * 
 
-phb_race_table = (
-        {"RACE":"Dragonborn","LOW":1,"HIGH":1},
-        {"RACE":"Half-Elf","LOW":2,"HIGH":3},
-        {"RACE":"Halfling","LOW":4,"HIGH":6},
-        {"RACE":"Elf","LOW":7,"HIGH":9},
-        {"RACE":"Human","LOW":10,"HIGH":89},
-        {"RACE":"Dwarf","LOW":90,"HIGH":94},
-        {"RACE":"Gnome","LOW":95,"HIGH":97},
-        {"RACE":"Half-Orc","LOW":98,"HIGH":99},
-        {"RACE":"Tiefling","LOW":100,"HIGH":100}
-        )
-
-basic_four_table = (
-        {"RACE":"Halfling","LOW":1,"HIGH":10},
-        {"RACE":"Elf","LOW":11,"HIGH":25},
-        {"RACE":"Human","LOW":26,"HIGH":75},
-        {"RACE":"Dwarf","LOW":76,"HIGH":100}
-        )
 
 def load_table(fname):
     table = load_table_data(fname)

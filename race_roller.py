@@ -4,19 +4,6 @@ import sys, getopt, os, csv
 import table_roller
 from xdice import * 
 
-def load_race_table(fname):
-    with open(fname, "r") as f:
-        csv_reader = csv.DictReader(f)
-        race_table = list(csv_reader)
-        ensureIntDemographicData(race_table)
-        return race_table
-
-def ensureIntDemographicData(race_table):
-    for r in race_table:
-        r["LOW"] = int(r["LOW"])
-        r["HIGH"] = int(r["HIGH"])
-
-
 def checkForCSV(fname):
     root, ext = os.path.splitext(fname)
     if ext == ".csv":
@@ -36,6 +23,7 @@ def subrace(prace):
     srace += half_elf_sub(prace)
     srace += halfling_sub(prace)
     srace += elf_sub(prace)
+    srace += drow_sub(prace)
     srace += human_sub(prace)
     srace += dwarf_sub(prace)
     srace += gnome_sub(prace)
@@ -48,96 +36,51 @@ def human_sub(prace):
     if prace != "Human":
         return ""
     else:
-        sub = roll("1d10")
-        if sub > 6:
-            return "Specialist (Variant)"
-        return "Generalist (Standard)"
+        return table_roller.roll_on_table("./roll_tables/subraces/humans.csv")
 
 def dwarf_sub(prace):
     if prace != "Dwarf":
         return ""
     else:
+        return table_roller.roll_on_table("./roll_tables/subraces/dwarves.csv")
         sub = roll ("1d10")
-        if sub <= 2:
-           return "Gray"
-        elif sub <= 5:
-           return "Mountain"
-        return "Hill"
 
 def elf_sub(prace):
     if prace != "Elf":
         return ""
     else:
-        sub = roll ("1d8")
-        if sub == 1:
-            return "Eladrin"
-        elif sub <= 3:
-            return "Drow"
-        elif sub <= 5:
-            return "Wood"
-        return "High"
+        return table_roller.roll_on_table("./roll_tables/subraces/elves.csv")
+
+def drow_sub(prace):
+    if prace != "Drow":
+        return ""
+    else:
+       return table_roller.roll_on_table("./roll_tables/subraces/drows.csv")
+
 
 def halfling_sub(prace):
     if prace != "Halfling":
         return ""
     else:
-        sub = roll("1d10")
-        if sub == 1:
-            return "Ghostwise"
-        elif sub <= 5:
-            return "Stout"
-        return "Lightfoot"
+        return table_roller.roll_on_table("./roll_tables/subraces/halflings.csv")
 
 def gnome_sub(prace):
     if prace != "Gnome":
         return ""
     else:
-        sub = roll("1d10")
-        if sub <= 2:
-            return "Deep"
-        elif sub <= 5:
-            return "Forest"
-        return "Rock"
+        return table_roller.roll_on_table("./roll_tables/subraces/gnomes.csv")
 
 def half_elf_sub(prace):
     if prace != "Half-Elf":
         return ""
     else:
-        sub = roll("1d20")
-        if sub <= 2:
-            return "Half Eladrin"
-        elif sub <= 4:
-            return "Half Drow"
-        elif sub <= 8:
-            return "Half Wood Elf"
-        elif sub <= 13:
-            return "Half High Elf"
-        return "Unkown Elven heritage"
+        return table_roller.roll_on_table("./roll_tables/subraces/halfelves.csv")
 
 def dragonborn_sub(prace):
     if prace != "Dragonborn":
         return ""
     else:
-        sub = roll("1d10")
-        if sub == 1:
-            return "Black"
-        elif sub == 2:
-            return "Blue"
-        elif sub == 3:
-            return "Brass"
-        elif sub == 4:
-            return "Bronze"
-        elif sub == 5:
-            return "Copper"
-        elif sub == 6:
-            return "Gold"
-        elif sub == 7:
-            return "Green"
-        elif sub == 8:
-            return "Red"
-        elif sub == 9:
-            return "Silver"
-        return "White"
+        return table_roller.roll_on_table("./roll_tables/subraces/dragonborn.csv")
 
 def tiefling_sub(prace):
     if prace != "Tiefling":

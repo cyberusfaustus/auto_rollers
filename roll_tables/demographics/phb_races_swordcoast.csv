@@ -1,8 +1,9 @@
 RACE,LOW,HIGH
 Dragonborn,1,1
-Half-Elf,2,3
-Halfling,4,6
-Elf,7,9
+Half-Elf,2,2
+Halfling,3,5
+Drow,6,7
+Elf,8,9
 Human,10,89
 Dwarf,90,94
 Gnome,95,97
