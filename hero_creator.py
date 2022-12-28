@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-import xdice
+from xdice import *
 import time
 import race_roller as rroller
 import colville_char_roller as croller
+import table_roller
+
 
 cls = chr(27)+"[H" + chr(27) + "[J"
 print(cls)
@@ -19,8 +21,12 @@ time.sleep(1)
 print(".", end='')
 print()
 print("... Thunder rolls portentiously ...")
-rroll = xdice.roll("1d100")
-ancestry = rroller.ancestry(rroll, rroller.phb_race_table)
+table = table_roller.load_table_data("./roll_tables/demographics/phb_races_swordcoast.csv")
+die = table_roller.get_die_from_last_entry(table)
+table_roller.ensureIntLowHighData(table)
+primary_roll = roll("1d"+die)
+primary_race = table_roller.pick_from_table(primary_roll, table)
+ancestry = rroller.ancestry(primary_race)
 time.sleep(1)
 print(".", end='')
 time.sleep(1)
