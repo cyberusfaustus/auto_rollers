@@ -86,31 +86,7 @@ def tiefling_sub(prace):
     if prace != "Tiefling":
         return ""
     else:
-        sub = roll("1d12")
-        if sub == 1:
-            return "Blood of Asmodeus (Standard)"
-        elif sub == 2:
-            return "Blood of Baalzebul"
-        elif sub == 3:
-            return "Blood of Dispater"
-        elif sub == 4:
-            return "Feral"
-        elif sub == 5:
-            return "Feral (Variant)"
-        elif sub == 6:
-            return "Blood of Fierna"
-        elif sub == 7:
-            return "Blood of Glasya"
-        elif sub == 8:
-            return "Blood of Levistus"
-        elif sub == 9:
-            return "Blood of Mammon"
-        elif sub == 10:
-            return "Blood of Mephistopheles"
-        elif sub == 11:
-            return "Unknown (Variant)"
-        return "Blood of Zariel"
-
+        return table_roller.roll_on_table("./roll_tables/subraces/tieflings.csv")
 
 def ancestry(primary_race):
     sub_race = subrace(primary_race)
